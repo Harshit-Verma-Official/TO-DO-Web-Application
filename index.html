@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Simple todo application</title>
+    <style>
+        body {
+	background-color: #34495e;
+}
+
+#container {
+  width: 350px;
+  height: auto;
+  margin: 0 auto;
+  text-align: center;
+  background: white;
+  height: 650px;
+  overflow-y: auto;
+  color: black;
+  border: 10px solid #01a3a4;
+  border-radius: 10px;
+  background-image: url(blur5.jpg);
+  background-size: contain;
+}
+#container h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+    color: white;
+}
+#container ul {
+  margin-top: 50px;
+  padding-left: 0;
+}
+#container ul li {
+  list-style: none;
+  border: 2px solid #b5c5dd;
+  width: 80%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  height: 40px;
+  margin: 5px auto;
+  text-align: left;
+}
+#container ul li label {
+  margin: 0 auto;
+  vertical-align: middle;
+  height: 100%;
+  line-height: 40px;
+  font-size: 18px;
+  color: white;
+}
+#container ul li #check {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  -webkit-appearance: none;
+  border: 2px solid #b5c5dd;
+  position: relative;
+  outline: 0;
+}
+#container ul li #check:checked:after {
+  content: '\2714';
+  font-size: 20px;
+  position: absolute;
+  top: 0px;
+  left: 7px;
+  color: white;
+}
+#container ul li input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+  color: rgba(0, 0, 0, .3);
+}
+#container .controls {
+  width: 60%;
+  margin: auto;
+}
+#container .controls #input {
+  width: 100%;
+  height: 30px;
+  font-size: 20px;
+  padding-left: 5px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  border: 2px solid #b5c5dd;
+  border-radius: 10px;
+}
+#container .controls #input:focus {
+  outline: 0;
+}
+#container .controls button {
+  width: 100%;
+  background: white;
+  border: none;
+  height: 30px;
+  margin-top: 2px;
+  cursor: pointer;
+  color: white;
+
+}
+#container .controls button:focus {
+  outline: 0;
+}
+#container .controls button:hover {
+  transform: scale(1.05);
+}
+#container .controls #add {
+  background-color: #2980b9;
+  border-radius: 10px;
+}
+#container .controls #remove {
+  background-color: #c0392b;
+  border-radius: 10px;
+}
+#container .controls #removeAll {
+  background-color: #da9f33;
+  border-radius: 10px;
+}
+#container .mycheck {
+  opacity: 1;
+  border-radius: 10px;
+}
+.visual {
+  opacity: 1 !important;
+  border-radius: 10px;
+}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="controls">
+            <h1>My Awesome TODO</h1>
+            <input type="text" id="input"><br>
+            <button type="button" id="add">Add TODO</button>
+            <button type="button" id="remove">Remove done TODO</button>
+            <button type="button" id="removeAll">Remove All TODO</button>
+        </div>
+        <ul id="list">
+            <li class="mycheck"><input type="checkbox" id="check"><label>Go to gym</label></li>
+        </ul>
+    </div>
+    
+    <script>
+        
+var ul = document.getElementById('list');
+var li;
+
+var addButton = document.getElementById('add');
+addButton.addEventListener('click', addItem);
+
+var removeButton = document.getElementById('remove');
+removeButton.addEventListener('click', removeItem)
+
+var removeAllButton = document.getElementById('removeAll');
+removeAllButton.addEventListener('click', removeAllItem)
+
+
+function addItem(){
+    var input = document.getElementById('input');
+    var item = input.value;
+    ul = document.getElementById('list');
+    var textnode = document.createTextNode(item)
+
+    if (item === '') {
+        return false;
+        //Add a p tag and assign a value of "Enter your todo"
+    } else {
+        //create li
+        li = document.createElement('li');
+
+        //create checkbox
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.setAttribute('id', 'check');
+
+        //create label
+        var label = document.createElement('label');
+        label.setAttribute('for', 'item') //optional
+
+        //add these elements on web page
+
+        ul.appendChild(label);
+        li.appendChild(checkbox);
+        label.appendChild(textnode);
+        li.appendChild(label);
+        ul.insertBefore(li, ul.childNodes[0]);
+
+        setTimeout(() => {
+            li.className = 'visual';
+        }, 2);
+        
+
+        input.value = '';
+
+    }
+   
+}
+
+function removeItem() {
+    li = ul.children
+    for (let index = 0; index < li.length; index++) {
+        while ( li[index] && li[index].children[0].checked) {
+            ul.removeChild(li[index])
+        }
+       
+    }
+    
+
+}
+
+function removeAllItem() {
+    li = ul.children
+    for (let index = 0; index < li.length; index++) {
+        while ( li[index]) {
+            ul.removeChild(li[index])
+        }  
+    }
+}
+    </script>
+</body>
+</html>
